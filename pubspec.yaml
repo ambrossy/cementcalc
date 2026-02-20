@@ -1,5 +1,6 @@
-name: CementCalc
+name: cementcalc
 description: A new Flutter project.
+version: 0.1.0+1
 
 environment:
   sdk: '^3.7.0'
