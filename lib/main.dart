@@ -177,14 +177,38 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+
+  int get _digitCount => input.startsWith('-') ? input.length - 1 : input.length;
+
+  void _handleMinus() {
+    setState(() {
+      if (input.isEmpty) {
+        input = '-';
+      } else if (input == '-') {
+        input = '';
+      } else if (input.startsWith('-')) {
+        input = input.substring(1);
+      } else {
+        input = '-$input';
+      }
+      buttonClicked = '-';
+    });
+
+    Future.delayed(const Duration(milliseconds: 100), () => setState(() => buttonClicked = ''));
+  }
+
+
   void _handleNumberClick(String value) {
     final limit = digitMode == 'X' ? 1 : (digitMode == 'XX' ? 2 : 3);
-    if (input.length < limit) {
+
+    if (_digitCount < limit) {
       setState(() {
         input += value;
         buttonClicked = value.toLowerCase();
       });
-      if (input.length == limit) _addValueFromInput();
+
+      if (_digitCount == limit) _addValueFromInput();
+
       Future.delayed(const Duration(milliseconds: 100), () => setState(() => buttonClicked = ''));
     }
   }
@@ -198,7 +222,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _handleAdd() {
-    if (input.isEmpty) return;
+    if (input.isEmpty || input == '-') return;
     _addValueFromInput();
   }
 
@@ -523,14 +547,27 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
               const SizedBox(height: 10),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                height: 60,
-                width: double.infinity,
-                decoration: BoxDecoration(color: Colors.white12, borderRadius: BorderRadius.circular(10)),
-                alignment: Alignment.centerRight,
-                child: Text(input.isEmpty ? '0' : input,
-                    style: const TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold)),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 80,
+                    height: 60,
+                    child: _buildGridButton('-', color: Colors.blueGrey, onPressed: _handleMinus),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      height: 60,
+                      decoration: BoxDecoration(color: Colors.white12, borderRadius: BorderRadius.circular(10)),
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        input.isEmpty ? '0' : input,
+                        style: const TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 20),
               GridView.count(
