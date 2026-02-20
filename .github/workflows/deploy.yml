@@ -26,11 +26,7 @@ jobs:
         run: flutter pub get
 
       - name: Build web release (PWA offline-first)
-        run: |
-          flutter build web \
-            --pwa-strategy=offline-first \
-            --release \
-            --base-href "/cementcalc/"
+        run: flutter build web --release --pwa-strategy=offline-first --base-href "/cementcalc/"
 
       - name: Deploy to GH Pages
         uses: peaceiris/actions-gh-pages@v3
