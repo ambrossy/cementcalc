@@ -37,14 +37,14 @@ jobs:
       - name: Read version from pubspec.yaml
         shell: bash
         run: |
-          RAW=$(grep '^version:' pubspec.yaml | awk '{print $2}')   # ej: 1.2.0+12
-          VERSION=$(echo "$RAW" | cut -d'+' -f1)                    # 1.2.0
-          BUILD=$(echo "$RAW" | awk -F'+' '{print $2}')             # 12
+          RAW=$(grep '^version:' pubspec.yaml | awk '{print $2}')   # ej: 0.1.0+1
+          VERSION=$(echo "$RAW" | cut -d'+' -f1)                    # 0.1.0
+          BUILD=$(echo "$RAW" | awk -F'+' '{print $2}')             # 1
           echo "RAW=$RAW" >> $GITHUB_ENV
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "BUILD=$BUILD" >> $GITHUB_ENV
-          echo "TAG=v$RAW" >> $GITHUB_ENV
-          echo "APK_NAME=cementcalc-v$RAW.apk" >> $GITHUB_ENV
+          echo "TAG=v$VERSION" >> $GITHUB_ENV
+          echo "APK_NAME=cementcalc-$VERSION+$BUILD.apk" >> $GITHUB_ENV
 
       - name: Validate signing secrets
         shell: bash
