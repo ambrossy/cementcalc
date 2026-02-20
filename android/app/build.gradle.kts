@@ -4,6 +4,7 @@ import java.util.Properties
 plugins {
     id("com.android.application")
     id("kotlin-android")
+    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
 
@@ -30,7 +31,9 @@ android {
     }
 
     defaultConfig {
+        // ⚠️ Recomendado: cambia esto a un id tuyo antes de distribuir
         applicationId = "com.example.cementcalc"
+
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
@@ -57,6 +60,14 @@ android {
             } else {
                 signingConfigs.getByName("debug")
             }
+
+            // Si luego quieres reducir tamaño (opcional):
+            // isMinifyEnabled = true
+            // isShrinkResources = true
+            // proguardFiles(
+            //     getDefaultProguardFile("proguard-android-optimize.txt"),
+            //     "proguard-rules.pro"
+            // )
         }
     }
 }
